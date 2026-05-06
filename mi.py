@@ -8,39 +8,42 @@ from pathlib import Path
 st.set_page_config(page_title="Mumbai Indians Dashboard", page_icon="🏏", layout="wide")
 
 # Colours
-BLUE  = "#004BA0"
-GOLD  = "#D4AF37"
-DARK  = "#002D6B"
-LIGHT = "#E8F0FC"
+BLUE   = "#0052CC"
+GOLD   = "#F0B429"
+DARK   = "#001A4E"
+LIGHT  = "#EEF4FF"
+TEAL   = "#0B8ACB"
+SILVER = "#F8FAFF"
 TITLE_YEARS = {"2013", "2015", "2017", "2019", "2020"}
 
 #LOGOs
 TEAM_LOGOS = {
-    "MI":   "assets/logos/mi.svg",
-    "CSK":  "assets/logos/csk.svg",
-    "KKR":  "assets/logos/kkr.svg",
-    "RCB":  "assets/logos/rcb.svg",
-    "DC":   "assets/logos/dc.svg",
-    "RR":   "assets/logos/rr.svg",
-    "SRH":  "assets/logos/srh.svg",
-    "PBKS": "assets/logos/pbks.svg",
-    "GT":   "assets/logos/gt.svg",
+    "MI":   "C:/Users/dell/Downloads/Mumbai_Indians_Logo.svg.png",
+    "CSK":  "C:/Users/dell/Downloads/Chennai-Super-Kings-Logo.png",
+    "KKR":  r"C:\Users\dell\Downloads\kkr.png",
+    "RCB":  r"C:\Users\dell\Downloads\rcb.png",
+    "DC":  r"C:\Users\dell\Downloads\dc.png",
+    "RR":   r"C:\Users\dell\Downloads\rr.png",
+    "SRH":  r"C:\Users\dell\Downloads\srh.png",
+    "PBKS": r"C:\Users\dell\Downloads\pbks.png",
+    "GT":  r"C:\Users\dell\Downloads\gt.png"
 }
 
 PLAYER_PHOTOS = {
-    "Rohit Sharma":     "assets/players/rohit.png",
-    "Sachin Tendulkar": "assets/players/tendulkar.png",
-    "Suryakumar Yadav": "assets/players/surya.png",
-    "Kieron Pollard":   "assets/players/pollard.png",
-    "Lasith Malinga":   "assets/players/malinga.png",
-    "Jasprit Bumrah":   "assets/players/bumrah.png",
-    "Harbhajan Singh":  "assets/players/harbhajan.png",
-    "Hardik Pandya":    "assets/players/hardik.png",
+    "Rohit Sharma":     "C:/Users/dell/Downloads/rs.png",
+    "Sachin Tendulkar": r"C:\Users\dell\Downloads\st.png",
+    "Suryakumar Yadav": r"C:\Users\dell\Downloads\download (1).png",
+    "Kieron Pollard":   r"C:\Users\dell\Downloads\kp.png",
+    "Lasith Malinga":   r"C:\Users\dell\Downloads\lm.png",
+    "Jasprit Bumrah":   r"C:\Users\dell\Downloads\jb.png",
+    "Harbhajan Singh":  r"C:\Users\dell\Downloads\hb.png",
+    "Hardik Pandya":   r"C:\Users\dell\Downloads\hp.png",
 }
 
 # img
 def img_to_b64(path: str) -> str:
-    p = Path(path)
+    # resolve relative to this script's directory, not CWD
+    p = Path(__file__).parent / path
     raw = p.read_bytes()
     b64 = base64.b64encode(raw).decode()
     mime = "image/svg+xml" if p.suffix == ".svg" else "image/png"
@@ -48,33 +51,49 @@ def img_to_b64(path: str) -> str:
 
 def player_avatar(name: str, badge_color: str = BLUE) -> str:
     path = PLAYER_PHOTOS.get(name, "")
-    if path and Path(path).exists():
+    resolved = Path(__file__).parent / path if path else None
+    if resolved and resolved.exists():
         src = img_to_b64(path)
         return (
-            f'<img src="{src}" style="width:48px;height:48px;border-radius:50%;'
-            f'object-fit:cover;border:2px solid {GOLD};flex-shrink:0;">'
+            f'<div style="width:56px;height:56px;border-radius:50%;flex-shrink:0;'
+            f'overflow:hidden;border:2.5px solid {GOLD};'
+            f'box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
+            f'<img src="{src}" style="width:100%;height:100%;object-fit:cover;">'
+            f'</div>'
         )
     initials = "".join(w[0] for w in name.split()[:2]).upper()
     return (
-        f'<div style="width:48px;height:48px;border-radius:50%;flex-shrink:0;'
-        f'background:{LIGHT};display:flex;align-items:center;justify-content:center;'
-        f'font-family:Bebas Neue,sans-serif;font-size:15px;color:{badge_color};">'
+        f'<div style="width:56px;height:56px;border-radius:50%;flex-shrink:0;'
+        f'background:linear-gradient(135deg,{badge_color},{TEAL});'
+        f'display:flex;align-items:center;justify-content:center;'
+        f'font-family:\'Bebas Neue\',sans-serif;font-size:16px;color:white;'
+        f'border:2.5px solid {GOLD};box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
         f'{initials}</div>'
     )
 
 def logo_tag(team: str, size: int = 32) -> str:
     path = TEAM_LOGOS.get(team, "")
-    if path and Path(path).exists():
+    resolved = Path(__file__).parent / path if path else None
+    if resolved and resolved.exists():
         src = img_to_b64(path)
-        return f'<img src="{src}" style="width:{size}px;height:{size}px;object-fit:contain;vertical-align:middle;">'
-    return f'<span style="font-size:11px;font-weight:600;color:{BLUE};">{team}</span>'
+        pad = max(2, size // 10)
+        return (
+            f'<div style="width:{size+pad*2}px;height:{size+pad*2}px;border-radius:50%;'
+            f'background:rgba(255,255,255,0.95);display:inline-flex;align-items:center;'
+            f'justify-content:center;vertical-align:middle;flex-shrink:0;'
+            f'box-shadow:0 2px 6px rgba(0,0,0,0.12);border:1px solid rgba(0,0,0,0.06);">'
+            f'<img src="{src}" style="width:{size}px;height:{size}px;object-fit:contain;">'
+            f'</div>'
+        )
+    return f'<span style="font-size:11px;font-weight:700;color:{BLUE};padding:2px 6px;background:{LIGHT};border-radius:4px;">{team}</span>'
 
 def mi_header_logo() -> str:
     path = TEAM_LOGOS.get("MI", "")
-    if path and Path(path).exists():
+    resolved = Path(__file__).parent / path if path else None
+    if resolved and resolved.exists():
         src = img_to_b64(path)
-        return f'<img src="{src}" style="width:68px;height:68px;object-fit:contain;">'
-    return f'<span style="font-family:Bebas Neue,sans-serif;font-size:30px;color:{DARK};">MI</span>'
+        return f'<img src="{src}" style="width:72px;height:72px;object-fit:contain;">'
+    return f'<span style="font-family:\'Bebas Neue\',sans-serif;font-size:30px;color:{DARK};">MI</span>'
 
 # plotly
 def hex_to_rgba(hex_color: str, alpha: float = 0.09) -> str:
@@ -83,9 +102,9 @@ def hex_to_rgba(hex_color: str, alpha: float = 0.09) -> str:
     return f"rgba({r},{g},{b},{alpha})"
 
 BASE = dict(
-    paper_bgcolor="white",
-    plot_bgcolor="white",
-    font=dict(family="DM Sans, sans-serif", color="rgb(26,26,46)"),
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(family="Inter, DM Sans, sans-serif", color="rgb(30,41,59)"),
     margin=dict(l=10, r=10, t=30, b=10),
 )
 
@@ -165,10 +184,13 @@ def season_chart():
         textfont=dict(size=11, color="#6b7280"),
     ))
     fig.update_layout(
-        **BASE, bargap=0.35, height=300, showlegend=False,
+        **BASE, bargap=0.35, height=320, showlegend=False,
         xaxis=dict(tickmode="array", tickvals=years, ticktext=ticks,
                    tickfont=dict(size=11), showgrid=False),
-        yaxis=dict(gridcolor="rgba(0,0,0,0.05)", zeroline=False),
+        yaxis=dict(
+            gridcolor="rgba(0,0,0,0.05)", zeroline=False,
+            range=[0, max(wins) * 1.25],   # headroom so "outside" labels never clip
+        ),
     )
     return fig
 
@@ -279,10 +301,17 @@ def radar_chart():
 #  UI 
 def chart_card(title: str, fig, key: str):
     st.markdown(
-        f'<div style="background:white;border-radius:12px;padding:1.25rem 1.25rem 0.5rem;'
-        f'border:1px solid rgba(0,0,0,0.07);margin-bottom:1rem;">'
-        f'<div style="font-size:11px;font-weight:500;color:#6b7280;'
-        f'text-transform:uppercase;letter-spacing:0.5px;margin-bottom:.5rem;">{title}</div>',
+        f'<div style="background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);'
+        f'-webkit-backdrop-filter:blur(12px);border-radius:16px;'
+        f'padding:1.4rem 1.4rem 0.6rem;'
+        f'border:1px solid rgba(255,255,255,0.9);'
+        f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.06);'
+        f'margin-bottom:1.2rem;">'
+        f'<div style="font-size:11px;font-weight:600;color:#64748b;'
+        f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:.6rem;'
+        f'display:flex;align-items:center;gap:6px;">'
+        f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
+        f'border-radius:2px;display:inline-block;"></span>{title}</div>',
         unsafe_allow_html=True,
     )
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False}, key=key)
@@ -291,72 +320,129 @@ def chart_card(title: str, fig, key: str):
 def player_row_html(name: str, role: str, stats: list, badge_color: str = BLUE) -> str:
     avatar     = player_avatar(name, badge_color)
     stats_html = "".join(
-        f'<div style="text-align:center;min-width:55px;">'
-        f'<div style="font-size:16px;font-weight:600;color:{BLUE};">{v}</div>'
-        f'<div style="font-size:10px;color:#6b7280;text-transform:uppercase;">{k}</div>'
+        f'<div style="text-align:center;min-width:58px;padding:0 4px;">'
+        f'<div style="font-size:17px;font-weight:700;color:{BLUE};letter-spacing:-0.3px;">{v}</div>'
+        f'<div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;margin-top:1px;">{k}</div>'
         f'</div>'
         for k, v in stats
     )
     return (
-        f'<div style="display:flex;align-items:center;gap:14px;background:white;'
-        f'border:1px solid rgba(0,0,0,0.07);border-radius:12px;'
-        f'padding:.85rem 1rem;border-left:4px solid {GOLD};margin-bottom:8px;">'
+        f'<div style="display:flex;align-items:center;gap:14px;'
+        f'background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);'
+        f'-webkit-backdrop-filter:blur(8px);'
+        f'border:1px solid rgba(255,255,255,0.95);border-radius:14px;'
+        f'padding:.9rem 1.1rem;border-left:4px solid {GOLD};margin-bottom:10px;'
+        f'box-shadow:0 2px 12px rgba(0,82,204,0.07),0 1px 2px rgba(0,0,0,0.04);'
+        f'transition:transform 0.15s;">'
         f'{avatar}'
         f'<div style="flex:1;min-width:0;">'
-        f'<div style="font-size:14px;font-weight:600;color:#1a1a2e;">{name}</div>'
-        f'<div style="font-size:11px;color:#6b7280;">{role}</div>'
+        f'<div style="font-size:14px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">{name}</div>'
+        f'<div style="font-size:11px;color:#94a3b8;margin-top:1px;">{role}</div>'
         f'</div>'
-        f'<div style="display:flex;gap:16px;flex-shrink:0;">{stats_html}</div>'
+        f'<div style="display:flex;gap:4px;flex-shrink:0;'
+        f'background:{LIGHT};border-radius:10px;padding:6px 8px;">{stats_html}</div>'
         f'</div>'
     )
 
 def kp_row_html(num: int, name: str, desc: str, kind: str) -> str:
-    colors = {"bat":(LIGHT,BLUE), "bowl":("#FFF3E0","#E65100"), "all":("#E8F5E9","#2E7D32")}
+    colors = {"bat":(LIGHT,BLUE), "bowl":("#FFF4ED","#C2410C"), "all":("#F0FDF4","#15803D")}
     tags   = {"bat":"Batsman", "bowl":"Bowler", "all":"All-rounder"}
     bg, fg = colors[kind]
     avatar = player_avatar(name, fg)
     return (
-        f'<div style="display:flex;align-items:center;gap:12px;background:white;'
-        f'border:1px solid rgba(0,0,0,0.07);border-radius:12px;'
-        f'padding:.75rem 1rem;margin-bottom:8px;">'
-        f'<div style="font-family:Bebas Neue,sans-serif;font-size:22px;'
-        f'color:{GOLD};width:24px;text-align:center;flex-shrink:0;">{num}</div>'
+        f'<div style="display:flex;align-items:center;gap:12px;'
+        f'background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);'
+        f'-webkit-backdrop-filter:blur(8px);'
+        f'border:1px solid rgba(255,255,255,0.95);border-radius:14px;'
+        f'padding:.8rem 1.1rem;margin-bottom:10px;'
+        f'box-shadow:0 2px 12px rgba(0,82,204,0.07),0 1px 2px rgba(0,0,0,0.04);">'
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
+        f'background:linear-gradient(135deg,{GOLD},{BLUE});-webkit-background-clip:text;'
+        f'-webkit-text-fill-color:transparent;background-clip:text;'
+        f'width:26px;text-align:center;flex-shrink:0;line-height:1;">{num}</div>'
         f'{avatar}'
         f'<div style="flex:1;">'
-        f'<div style="font-size:14px;font-weight:600;color:#1a1a2e;">{name}</div>'
-        f'<div style="font-size:12px;color:#6b7280;">{desc}</div>'
+        f'<div style="font-size:14px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">{name}</div>'
+        f'<div style="font-size:11px;color:#94a3b8;margin-top:2px;">{desc}</div>'
         f'</div>'
-        f'<div style="font-size:11px;padding:3px 11px;border-radius:12px;'
-        f'background:{bg};color:{fg};font-weight:500;white-space:nowrap;">{tags[kind]}</div>'
+        f'<div style="font-size:10px;padding:4px 12px;border-radius:20px;'
+        f'background:{bg};color:{fg};font-weight:600;white-space:nowrap;'
+        f'letter-spacing:0.3px;border:1px solid {fg}22;">{tags[kind]}</div>'
         f'</div>'
     )
 
 #  CSS 
 st.markdown(f"""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap');
-html, body, [class*="css"] {{ font-family: 'DM Sans', sans-serif; }}
-.stApp {{ background-color: #f0f3fa; }}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap');
+html, body, [class*="css"] {{ font-family: 'Inter', 'DM Sans', sans-serif; }}
+
+/* Mesh gradient background */
+.stApp {{
+    background: linear-gradient(135deg, #EEF4FF 0%, #F0F7FF 35%, #EFF6FF 60%, #F5F0FF 100%) !important;
+    background-attachment: fixed !important;
+}}
+
 #MainMenu, footer, header {{ visibility: hidden; }}
+
+/* Metric cards — glass */
 [data-testid="metric-container"] {{
-    background: white; border-radius: 12px;
-    padding: 1rem; border: 1px solid rgba(0,0,0,0.07);
+    background: rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 16px !important;
+    padding: 1.1rem 1.2rem !important;
+    border: 1px solid rgba(255,255,255,0.95) !important;
+    box-shadow: 0 4px 20px rgba(0,82,204,0.09), 0 1px 3px rgba(0,0,0,0.05) !important;
+    transition: transform 0.15s, box-shadow 0.15s !important;
+}}
+[data-testid="metric-container"]:hover {{
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 28px rgba(0,82,204,0.14), 0 2px 4px rgba(0,0,0,0.06) !important;
 }}
 [data-testid="stMetricValue"] {{
     font-family: 'Bebas Neue', sans-serif !important;
-    font-size: 2rem !important; color: {BLUE} !important;
+    font-size: 2.2rem !important;
+    background: linear-gradient(135deg, {BLUE}, {TEAL}) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    line-height: 1.1 !important;
 }}
 [data-testid="stMetricLabel"] {{
-    font-size: 11px !important; text-transform: uppercase;
-    letter-spacing: 0.5px; color: #6b7280 !important;
+    font-size: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
 }}
-[data-baseweb="tab-list"] {{ background: transparent !important; gap: 6px; }}
+[data-testid="stMetricDelta"] {{ display:none !important; }}
+
+/* Tabs */
+[data-baseweb="tab-list"] {{
+    background: rgba(255,255,255,0.7) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 24px !important;
+    padding: 4px !important;
+    gap: 2px !important;
+    border: 1px solid rgba(255,255,255,0.9) !important;
+    box-shadow: 0 2px 10px rgba(0,82,204,0.07) !important;
+    margin-bottom: 1.2rem !important;
+}}
 [data-baseweb="tab"] {{
-    border-radius: 20px !important; border: 1.5px solid #d1d5db !important;
-    background: white !important; color: #6b7280 !important; font-weight: 500 !important;
+    border-radius: 20px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s !important;
 }}
 [aria-selected="true"][data-baseweb="tab"] {{
-    background: {BLUE} !important; color: white !important; border-color: {BLUE} !important;
+    background: linear-gradient(135deg, {BLUE}, {TEAL}) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(0,82,204,0.3) !important;
 }}
 [data-baseweb="tab-highlight"], [data-baseweb="tab-border"] {{ display: none !important; }}
 .block-container {{ padding-top: 1rem !important; }}
@@ -365,28 +451,40 @@ html, body, [class*="css"] {{ font-family: 'DM Sans', sans-serif; }}
 
 #  Header 
 st.markdown(f"""
-<div style="background:{BLUE};border-radius:14px;padding:1.5rem 2rem;
+<div style="background:linear-gradient(135deg, {DARK} 0%, {BLUE} 55%, {TEAL} 100%);
+            border-radius:20px;padding:1.6rem 2rem;
             display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;
-            position:relative;overflow:hidden;">
-  <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;
-              border-radius:50%;border:35px solid rgba(212,175,55,0.15);"></div>
-  <div style="width:80px;height:80px;border-radius:50%;background:white;flex-shrink:0;
-              display:flex;align-items:center;justify-content:center;
-              border:3px solid {GOLD};overflow:hidden;padding:4px;">
+            position:relative;overflow:hidden;
+            box-shadow:0 8px 32px rgba(0,82,204,0.25),0 2px 8px rgba(0,0,0,0.15);">
+  <!-- Decorative circles -->
+  <div style="position:absolute;right:-60px;top:-60px;width:240px;height:240px;
+              border-radius:50%;border:40px solid rgba(240,180,41,0.12);pointer-events:none;"></div>
+  <div style="position:absolute;right:80px;bottom:-80px;width:180px;height:180px;
+              border-radius:50%;border:30px solid rgba(255,255,255,0.06);pointer-events:none;"></div>
+  <!-- Logo -->
+  <div style="width:82px;height:82px;border-radius:50%;
+              background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);
+              flex-shrink:0;display:flex;align-items:center;justify-content:center;
+              border:2px solid rgba(240,180,41,0.6);overflow:hidden;padding:6px;
+              box-shadow:0 4px 16px rgba(0,0,0,0.2);">
     {mi_header_logo()}
   </div>
+  <!-- Title -->
   <div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:white;
-                letter-spacing:1px;line-height:1;">Mumbai Indians</div>
-    <div style="font-size:13px;color:rgba(255,255,255,0.65);margin-top:4px;">
-      IPL Stats Dashboard &nbsp;&middot;&nbsp; All-time record
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:white;
+                letter-spacing:2px;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.2);">Mumbai Indians</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:5px;
+                letter-spacing:0.5px;font-weight:500;">
+      IPL Stats Dashboard &nbsp;·&nbsp; All-time record
     </div>
   </div>
+  <!-- Trophy count -->
   <div style="margin-left:auto;text-align:right;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:54px;
-                color:{GOLD};line-height:1;">5</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.55);
-                text-transform:uppercase;letter-spacing:1px;">IPL Titles</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:62px;
+                color:{GOLD};line-height:1;
+                text-shadow:0 0 30px rgba(240,180,41,0.4);">5</div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.5);
+                text-transform:uppercase;letter-spacing:1.5px;font-weight:600;">IPL Titles</div>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -430,18 +528,23 @@ with tab1:
             ("Longest win streak","9 matches"), ("Titles (joint record)","5"),
         ]
         rows = "".join(
-            f'<div style="display:flex;justify-content:space-between;padding:9px 0;'
-            f'border-bottom:0.5px solid rgba(0,0,0,0.06);">'
-            f'<span style="font-size:13px;color:#6b7280;">{lbl}</span>'
-            f'<span style="font-size:13px;font-weight:600;color:{BLUE};">{val}</span>'
+            f'<div style="display:flex;justify-content:space-between;align-items:center;'
+            f'padding:10px 0;border-bottom:1px solid rgba(0,82,204,0.06);">'
+            f'<span style="font-size:12px;color:#94a3b8;font-weight:500;">{lbl}</span>'
+            f'<span style="font-size:13px;font-weight:700;color:{BLUE};">{val}</span>'
             f'</div>'
             for lbl, val in facts
         )
         st.markdown(
-            f'<div style="background:white;border-radius:12px;padding:1.25rem;'
-            f'border:1px solid rgba(0,0,0,0.07);">'
-            f'<div style="font-size:11px;font-weight:500;color:#6b7280;'
-            f'text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;">Quick facts</div>'
+            f'<div style="background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);'
+            f'-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:1.4rem;'
+            f'border:1px solid rgba(255,255,255,0.95);height:100%;'
+            f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.05);">'
+            f'<div style="font-size:10px;font-weight:700;color:#94a3b8;'
+            f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1rem;'
+            f'display:flex;align-items:center;gap:6px;">'
+            f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
+            f'border-radius:2px;display:inline-block;"></span>Quick facts</div>'
             f'{rows}</div>',
             unsafe_allow_html=True,
         )
@@ -449,8 +552,10 @@ with tab1:
 #TAB2—PLAYER STATS 
 with tab2:
     st.markdown(
-        f'<div style="font-family:Bebas Neue,sans-serif;font-size:22px;'
-        f'color:#1a1a2e;margin-bottom:.75rem;">Batting Legends</div>',
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
+        f'background:linear-gradient(135deg,{DARK},{BLUE});'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+        f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">Batting Legends</div>',
         unsafe_allow_html=True,
     )
     for _, r in BATTERS.iterrows():
@@ -462,8 +567,10 @@ with tab2:
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown(
-        f'<div style="font-family:Bebas Neue,sans-serif;font-size:22px;'
-        f'color:#1a1a2e;margin-bottom:.75rem;">Bowling Attack</div>',
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
+        f'background:linear-gradient(135deg,{DARK},{BLUE});'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+        f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">Bowling Attack</div>',
         unsafe_allow_html=True,
     )
     for _, r in BOWLERS.iterrows():
@@ -502,26 +609,32 @@ with tab4:
 
     with col_l:
         bars = "".join(
-            f'<div style="margin-bottom:10px;">'
+            f'<div style="margin-bottom:12px;">'
             f'<div style="display:flex;align-items:center;justify-content:space-between;'
-            f'font-size:12px;margin-bottom:4px;">'
-            f'<span style="display:flex;align-items:center;gap:6px;">'
+            f'font-size:12px;margin-bottom:5px;">'
+            f'<span style="display:flex;align-items:center;gap:7px;">'
             f'{logo_tag(r["Team"], 22)}'
-            f'<span style="color:#1a1a2e;font-weight:500;">{r["Team"]}</span></span>'
-            f'<span style="color:#6b7280;">{r["Wins"]}W &nbsp;{r["Losses"]}L'
-            f'&nbsp;<b style="color:{BLUE};">{r["WinPct"]}%</b></span>'
+            f'<span style="color:#0f172a;font-weight:600;">{r["Team"]}</span></span>'
+            f'<span style="color:#94a3b8;font-size:11px;">{r["Wins"]}W &nbsp;{r["Losses"]}L'
+            f'&nbsp;<b style="color:{BLUE};font-size:12px;">{r["WinPct"]}%</b></span>'
             f'</div>'
-            f'<div style="display:flex;height:6px;border-radius:4px;overflow:hidden;">'
-            f'<div style="width:{r["WinPct"]}%;background:{BLUE};"></div>'
-            f'<div style="width:{100 - r["WinPct"]}%;background:#e0e0e0;"></div>'
+            f'<div style="display:flex;height:7px;border-radius:6px;overflow:hidden;'
+            f'background:#e2e8f0;">'
+            f'<div style="width:{r["WinPct"]}%;background:linear-gradient(90deg,{BLUE},{TEAL});'
+            f'border-radius:6px;transition:width 0.3s;"></div>'
             f'</div></div>'
             for _, r in RIVALS.iterrows()
         )
         st.markdown(
-            f'<div style="background:white;border-radius:12px;padding:1.25rem;'
-            f'border:1px solid rgba(0,0,0,0.07);">'
-            f'<div style="font-size:11px;font-weight:500;color:#6b7280;'
-            f'text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;">'
+            f'<div style="background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);'
+            f'-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:1.4rem;'
+            f'border:1px solid rgba(255,255,255,0.95);'
+            f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.05);">'
+            f'<div style="font-size:10px;font-weight:700;color:#94a3b8;'
+            f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1.1rem;'
+            f'display:flex;align-items:center;gap:6px;">'
+            f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
+            f'border-radius:2px;display:inline-block;"></span>'
             f'Win ratio vs each team</div>{bars}</div>',
             unsafe_allow_html=True,
         )
@@ -533,8 +646,10 @@ with tab5:
     kp_col, radar_col = st.columns(2)
     with kp_col:
         st.markdown(
-            f'<div style="font-family:Bebas Neue,sans-serif;font-size:22px;'
-            f'color:#1a1a2e;margin-bottom:.75rem;">All-time Impact XI</div>',
+            f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
+            f'background:linear-gradient(135deg,{DARK},{BLUE});'
+            f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+            f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact XI</div>',
             unsafe_allow_html=True,
         )
         for num, name, desc, kind in KEY_PLAYERS:
