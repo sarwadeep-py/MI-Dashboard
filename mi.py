@@ -18,7 +18,7 @@ TITLE_YEARS = {"2013", "2015", "2017", "2019", "2020"}
 
 #LOGOs
 TEAM_LOGOS = {
-    "MI":   "images/MI.png",
+    "MI":   "images/mi.png",
     "CSK":  "images/csk.png",
     "KKR":  "images/kkr.png",
     "RCB":  "images/rcb.png",
@@ -49,25 +49,27 @@ def img_to_b64(path: str) -> str:
     mime = "image/svg+xml" if p.suffix == ".svg" else "image/png"
     return f"data:{mime};base64,{b64}"
 
-def player_avatar(name: str, badge_color: str = BLUE) -> str:
+def player_avatar(name: str, badge_color: str = BLUE, size: int = 56) -> str:
     path = PLAYER_PHOTOS.get(name, "")
     resolved = Path(__file__).parent / path if path else None
+    font_size = max(12, size // 3)
+    border_px = max(2, size // 22)
     if resolved and resolved.exists():
         src = img_to_b64(path)
         return (
-            f'<div style="width:56px;height:56px;border-radius:50%;flex-shrink:0;'
-            f'overflow:hidden;border:2.5px solid {GOLD};'
+            f'<div style="width:{size}px;height:{size}px;border-radius:50%;flex-shrink:0;'
+            f'overflow:hidden;border:{border_px+0.5}px solid {GOLD};'
             f'box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
-            f'<img src="{src}" style="width:100%;height:100%;object-fit:cover;">'
+            f'<img src="{src}" style="width:100%;height:100%;object-fit:cover;display:block;">'
             f'</div>'
         )
     initials = "".join(w[0] for w in name.split()[:2]).upper()
     return (
-        f'<div style="width:56px;height:56px;border-radius:50%;flex-shrink:0;'
+        f'<div style="width:{size}px;height:{size}px;border-radius:50%;flex-shrink:0;'
         f'background:linear-gradient(135deg,{badge_color},{TEAL});'
         f'display:flex;align-items:center;justify-content:center;'
-        f'font-family:\'Bebas Neue\',sans-serif;font-size:16px;color:white;'
-        f'border:2.5px solid {GOLD};box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
+        f'font-family:\'Bebas Neue\',sans-serif;font-size:{font_size}px;color:white;'
+        f'border:{border_px+0.5}px solid {GOLD};box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
         f'{initials}</div>'
     )
 
@@ -169,6 +171,125 @@ KEY_PLAYERS = [
     (7,"Hardik Pandya",   "1476 runs + 42 wickets · Title-winning allrounder", "all"),
 ]
 
+# Player profile data — used by the individual player pages
+PLAYER_PROFILES = {
+    "rohit-sharma": {
+        "name": "Rohit Sharma",
+        "nickname": "Hitman / Shana",
+        "kind": "bat",
+        "emoji": "🏏",
+        "tagline": "All-title winning captain · Record breaker · MI's heart",
+        "tags": ["Hitman", "Shana", "5× Title Captain", "Record Breaker"],
+        "highlights": [
+            ("🏆", "All 5 Title Wins", "The only captain to lead MI to all five IPL titles — 2013, 2015, 2017, 2019, 2020"),
+            ("📊", "IPL Records", "Holds multiple IPL batting records including most runs for MI with 5611 runs at an average of 45+"),
+            ("🎯", "Hitman", "Famous for his effortless stroke play and ability to dismantle any bowling attack with elegance"),
+            ("🌟", "Shana", "Affectionately called 'Shana' — the Mumbai lad who rose to become one of cricket's greatest captains"),
+        ],
+        "stats": [("Runs", "5611"), ("Avg", "45.3"), ("100s", "4"), ("Titles", "5")],
+    },
+    "lasith-malinga": {
+        "name": "Lasith Malinga",
+        "nickname": "Slinga Malinga",
+        "kind": "bowl",
+        "emoji": "🎳",
+        "tagline": "Right-arm Slinger · 2019 Final Hero · Sri Lankan Legend",
+        "tags": ["Right-arm Slinger", "Yorker King", "2019 Final Hero", "Sri Lankan Legend"],
+        "highlights": [
+            ("🏏", "2019 Final Hero", "Bowled the last-ball yorker to defend 1 run off the final ball vs CSK — one of the greatest moments in IPL history"),
+            ("🌀", "Right-arm Slinger", "His unorthodox slingy round-arm action made him virtually unplayable at the death"),
+            ("🇱🇰", "Sri Lankan Legend", "The greatest Sri Lankan fast bowler ever, who chose MI as his IPL home for 11 seasons"),
+            ("🎯", "Yorker Specialist", "170 wickets for MI — the highest by any bowler in IPL history at the time of his retirement"),
+        ],
+        "stats": [("Wickets", "170"), ("Eco", "7.14"), ("Avg", "17.0"), ("Seasons", "11")],
+    },
+    "kieron-pollard": {
+        "name": "Kieron Pollard",
+        "nickname": "Polly",
+        "kind": "all",
+        "emoji": "💪",
+        "tagline": "West Indian Legend · Best Finisher · CSK's Nightmare",
+        "tags": ["West Indian Legend", "Best Finisher", "CSK's Nightmare", "Saviour", "Gun Fielder"],
+        "highlights": [
+            ("🌴", "West Indian Legend", "The greatest West Indian cricketer in IPL history — 13 seasons of heart, muscle, and magic for MI"),
+            ("🏏", "Best Finisher", "Consistently one of the best finishers in T20 cricket — capable of winning matches from any situation"),
+            ("😤", "CSK's Nightmare", "Holds an exceptional record against CSK with match-winning performances at crucial moments"),
+            ("🤲", "Saviour & Gun Fielder", "3412 runs + crucial wickets, plus one of the best outfielders in IPL history"),
+        ],
+        "stats": [("Runs", "3412"), ("Avg", "27.5"), ("SR", "191"), ("Seasons", "13")],
+    },
+    "jasprit-bumrah": {
+        "name": "Jasprit Bumrah",
+        "nickname": "Jassi / The GOAT",
+        "kind": "bowl",
+        "emoji": "🔥",
+        "tagline": "GOAT · Diamond of MI · Death Bowling Maestro",
+        "tags": ["GOAT", "Yorker Machine", "Diamond of MI", "Death Bowling", "Economical"],
+        "highlights": [
+            ("💎", "Diamond of the Team", "Bumrah is the crown jewel of MI's bowling — irreplaceable, priceless, and match-defining"),
+            ("🎯", "Yorker Machine", "His yorkers at the death are legendary — pin-point accuracy at 140+ kmph with a near-unplayable action"),
+            ("💰", "Economical", "Economy of 7.39 in T20 cricket — remarkable for a pace bowler who bowls the toughest overs"),
+            ("🐐", "The GOAT", "145 wickets for MI and widely regarded as the greatest fast bowler in T20 cricket history"),
+        ],
+        "stats": [("Wickets", "145"), ("Eco", "7.39"), ("Avg", "21.7"), ("Best", "5/10")],
+    },
+    "suryakumar-yadav": {
+        "name": "Suryakumar Yadav",
+        "nickname": "SKY / Mr. 360",
+        "kind": "bat",
+        "emoji": "🌟",
+        "tagline": "Mr. 360 · Scoop Shot King · T20 World Cup Winning Captain",
+        "tags": ["Mr. 360", "Supadupla Shot", "T20 WC Winning Captain", "Long Off Conqueror"],
+        "highlights": [
+            ("🌀", "Mr. 360", "Named for his ability to hit the ball to every part of the ground — no fielder placement is safe from SKY"),
+            ("🥄", "The Supadupla Shot", "His iconic ramp/scoop shot over fine leg or third man is almost impossible to bowl against"),
+            ("🏆", "T20 World Cup Captain", "Led India to the T20 World Cup title — the pinnacle of his remarkable T20 career"),
+            ("📐", "Long Off, Long Off, Long Off", "Ensured India's trophy after a decade with a stunning catch at long off in the 2024 T20 World Cup final — a moment that defined a generation"),
+        ],
+        "stats": [("Runs", "2644"), ("Avg", "31.9"), ("SR", "148"), ("World No.", "1")],
+    },
+    "sachin-tendulkar": {
+        "name": "Sachin Tendulkar",
+        "nickname": "God of Cricket / Master Blaster",
+        "kind": "bat",
+        "emoji": "🙏",
+        "tagline": "God of Cricket · MI Icon · Mentor · 100 International Hundreds",
+        "tags": ["God of Cricket", "MI Legend", "Indian Legend", "Mentor", "1st Orange Cap", "100 Hundreds"],
+        "highlights": [
+            ("🙏", "God of Cricket", "The greatest batsman to ever play the game — Sachin Tendulkar is cricket's deity"),
+            ("🍊", "First Orange Cap", "Won the very first IPL Orange Cap in 2010, proving his genius translated seamlessly to T20"),
+            ("💯", "100 International Hundreds", "The only cricketer in history to score 100 international centuries — a record that may never be broken"),
+            ("🧠", "Mentor", "Served as MI's mentor, shaping the culture and values of the most successful IPL franchise"),
+        ],
+        "stats": [("MI Runs", "2334"), ("Avg", "34.8"), ("100s", "100"), ("IPL 100s", "1")],
+    },
+    "hardik-pandya": {
+        "name": "Hardik Pandya",
+        "nickname": "Kung-fu Pandya",
+        "kind": "all",
+        "emoji": "⚡",
+        "tagline": "All-rounder · Gun Fielder · Kung-fu Pandya · Finisher",
+        "tags": ["All-rounder", "Gun Fielder", "Kung-fu Pandya", "Finisher"],
+        "highlights": [
+            ("🥋", "Kung-fu Pandya", "Nicknamed for his lightning-quick reflexes in the field and his explosive, martial-arts-like energy"),
+            ("🏏", "All-rounder", "1476 runs + 42 wickets for MI — a genuine match-winner with both bat and ball"),
+            ("🤸", "Gun Fielder", "One of the most athletic and dynamic fielders in IPL history — multiple stunning catches and run-outs"),
+            ("💥", "Finisher", "Capable of hitting sixes at will in the death overs and defending small totals with his pace"),
+        ],
+        "stats": [("Runs", "1476"), ("Wickets", "42"), ("SR", "145"), ("Eco", "8.89")],
+    },
+}
+
+PLAYER_SLUG = {
+    "Rohit Sharma":     "rohit-sharma",
+    "Lasith Malinga":   "lasith-malinga",
+    "Kieron Pollard":   "kieron-pollard",
+    "Jasprit Bumrah":   "jasprit-bumrah",
+    "Suryakumar Yadav": "suryakumar-yadav",
+    "Sachin Tendulkar": "sachin-tendulkar",
+    "Hardik Pandya":    "hardik-pandya",
+}
+
 # bar
 def season_chart():
     years  = [y for y, _ in SEASONS]
@@ -269,32 +390,91 @@ def rivals_chart():
     )
     return fig
 
-def radar_chart():
-    cats = ["Runs","Wickets","Strike Rate","Economy","Consistency","Match Wins"]
-    cc   = cats + [cats[0]]
-    datasets = [
-        ("Rohit Sharma", [95,40,72,50,90,98], BLUE),
-        ("Malinga",      [20,98,30,85,88,95], GOLD),
-        ("Bumrah",       [15,90,25,92,85,90], "#E65100"),
+def finals_chart():
+    """Annotated bar chart showing how MI won each of the 5 IPL finals."""
+    finals = [
+        {"year": "2013", "opponent": "CSK",  "venue": "Eden Gardens, Kolkata","margin": 23,  "type": "runs",    "color": BLUE},
+        {"year": "2015", "opponent": "CSK",  "venue": "Eden Gardens, Kolkata","margin": 41,  "type": "runs",    "color": BLUE},
+        {"year": "2017", "opponent": "RPS",  "venue": "Hyderabad",            "margin": 1,   "type": "run",     "color": TEAL},
+        {"year": "2019", "opponent": "CSK",  "venue": "Hyderabad",            "margin": 1,   "type": "run",     "color": TEAL},
+        {"year": "2020", "opponent": "DC",   "venue": "Dubai",                "margin": 5,   "type": "wickets", "color": GOLD},
     ]
+
+    years    = [f["year"] for f in finals]
+    margins  = [f["margin"] for f in finals]
+    colors   = [f["color"] for f in finals]
+    labels   = [
+        f"{f['margin']} {f['type']}" for f in finals
+    ]
+    hover   = [
+        f"<b>{f['year']} Final</b><br>vs {f['opponent']}<br>{f['venue']}<br>Won by {f['margin']} {f['type']}"
+        for f in finals
+    ]
+
     fig = go.Figure()
-    for lbl, vals, col in datasets:
-        fig.add_trace(go.Scatterpolar(
-            r=vals + [vals[0]], theta=cc,
-            fill="toself", name=lbl,
-            line=dict(color=col, width=2),
-            fillcolor=hex_to_rgba(col, 0.09),
-            marker=dict(color=col, size=5),
-        ))
+
+    fig.add_trace(go.Bar(
+        x=years,
+        y=margins,
+        marker_color=colors,
+        marker_line_width=0,
+        marker_line_color="rgba(0,0,0,0)",
+        text=labels,
+        textposition="outside",
+        textfont=dict(size=13, color="#0f172a", family="Inter, sans-serif"),
+        hovertext=hover,
+        hoverinfo="text",
+        cliponaxis=False,
+    ))
+
+    # Opponent + venue annotations inside/below each bar
+    for i, f in enumerate(finals):
+        fig.add_annotation(
+            x=f["year"],
+            y=max(0.5, f["margin"] / 2),
+            text=f"vs {f['opponent']}",
+            showarrow=False,
+            font=dict(size=11, color="white", family="Inter, sans-serif"),
+            bgcolor="rgba(0,0,0,0)",
+        )
+        fig.add_annotation(
+            x=f["year"],
+            y=-4.5,
+            text=f['venue'],
+            showarrow=False,
+            font=dict(size=10, color="#1e293b", family="Inter, sans-serif"),
+            yref="y",
+        )
+
+    # Legend annotations (top right)
+    for label, color, ypos in [("Run wins", BLUE, 44), ("1-run thriller", TEAL, 41), ("Wicket win", GOLD, 38)]:
+        fig.add_annotation(
+            x=1.01, y=ypos, xref="paper", yref="y",
+            text=f'<span style="color:{color};">●</span> {label}',
+            showarrow=False,
+            font=dict(size=10, color="#1e293b", family="Inter, sans-serif"),
+            xanchor="left",
+        )
+
     fig.update_layout(
-        **BASE, height=320,
-        polar=dict(
-            radialaxis=dict(visible=False, range=[0,100]),
-            angularaxis=dict(tickfont=dict(size=11)),
-            bgcolor="white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=340,
+        showlegend=False,
+        margin=dict(l=10, r=110, t=20, b=50),
+        bargap=0.4,
+        xaxis=dict(
+            showgrid=False,
+            tickfont=dict(size=13, color="#0f172a", family="Inter, sans-serif"),
+            tickmode="array",
+            tickvals=years,
+            ticktext=[f"🏆 {y}" for y in years],
         ),
-        legend=dict(orientation="h", yanchor="bottom", y=-0.2,
-                    xanchor="center", x=0.5, font=dict(size=11)),
+        yaxis=dict(
+            showgrid=False,
+            showticklabels=False,
+            range=[-6, 52],
+        ),
     )
     return fig
 
@@ -307,7 +487,7 @@ def chart_card(title: str, fig, key: str):
         f'border:1px solid rgba(255,255,255,0.9);'
         f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.06);'
         f'margin-bottom:1.2rem;">'
-        f'<div style="font-size:11px;font-weight:600;color:#64748b;'
+        f'<div style="font-size:11px;font-weight:700;color:#1e293b;'
         f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:.6rem;'
         f'display:flex;align-items:center;gap:6px;">'
         f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
@@ -322,7 +502,7 @@ def player_row_html(name: str, role: str, stats: list, badge_color: str = BLUE) 
     stats_html = "".join(
         f'<div style="text-align:center;min-width:58px;padding:0 4px;">'
         f'<div style="font-size:17px;font-weight:700;color:{BLUE};letter-spacing:-0.3px;">{v}</div>'
-        f'<div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.8px;margin-top:1px;">{k}</div>'
+        f'<div style="font-size:9px;color:#374151;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-top:1px;">{k}</div>'
         f'</div>'
         for k, v in stats
     )
@@ -337,9 +517,9 @@ def player_row_html(name: str, role: str, stats: list, badge_color: str = BLUE) 
         f'{avatar}'
         f'<div style="flex:1;min-width:0;">'
         f'<div style="font-size:14px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">{name}</div>'
-        f'<div style="font-size:11px;color:#94a3b8;margin-top:1px;">{role}</div>'
+        f'<div style="font-size:11px;color:#374151;font-weight:600;margin-top:1px;">{role}</div>'
         f'</div>'
-        f'<div style="display:flex;gap:4px;flex-shrink:0;'
+        f'<div style="display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;'
         f'background:{LIGHT};border-radius:10px;padding:6px 8px;">{stats_html}</div>'
         f'</div>'
     )
@@ -349,6 +529,15 @@ def kp_row_html(num: int, name: str, desc: str, kind: str) -> str:
     tags   = {"bat":"Batsman", "bowl":"Bowler", "all":"All-rounder"}
     bg, fg = colors[kind]
     avatar = player_avatar(name, fg)
+    slug   = PLAYER_SLUG.get(name, "")
+    link_html = (
+        f'<a href="?player={slug}" target="_self" style="font-size:10px;color:{fg};'
+        f'font-weight:600;text-decoration:none;padding:4px 10px;border-radius:20px;'
+        f'background:{bg};border:1px solid {fg}44;white-space:nowrap;'
+        f'transition:opacity 0.15s;" '
+        f'onmouseover="this.style.opacity=\'0.75\'" '
+        f'onmouseout="this.style.opacity=\'1\'">View Profile →</a>'
+    ) if slug else ""
     return (
         f'<div style="display:flex;align-items:center;gap:12px;'
         f'background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);'
@@ -361,15 +550,122 @@ def kp_row_html(num: int, name: str, desc: str, kind: str) -> str:
         f'-webkit-text-fill-color:transparent;background-clip:text;'
         f'width:26px;text-align:center;flex-shrink:0;line-height:1;">{num}</div>'
         f'{avatar}'
-        f'<div style="flex:1;">'
+        f'<div style="flex:1;min-width:0;">'
         f'<div style="font-size:14px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">{name}</div>'
-        f'<div style="font-size:11px;color:#94a3b8;margin-top:2px;">{desc}</div>'
+        f'<div style="font-size:11px;color:#374151;font-weight:600;margin-top:2px;">{desc}</div>'
         f'</div>'
+        f'<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">'
         f'<div style="font-size:10px;padding:4px 12px;border-radius:20px;'
         f'background:{bg};color:{fg};font-weight:600;white-space:nowrap;'
         f'letter-spacing:0.3px;border:1px solid {fg}22;">{tags[kind]}</div>'
+        f'{link_html}'
+        f'</div>'
         f'</div>'
     )
+
+# ── Player Profile Page ──────────────────────────────────────────────────────
+def show_player_page(slug: str):
+    """Render a standalone player profile page."""
+    profile = PLAYER_PROFILES.get(slug)
+    if not profile:
+        st.error("Player not found.")
+        if st.button("← Back to Dashboard", key="back_err"):
+            st.query_params.clear()
+            st.rerun()
+        return
+
+    name    = profile["name"]
+    kind    = profile["kind"]
+    colors  = {"bat": (LIGHT, BLUE), "bowl": ("#FFF4ED","#C2410C"), "all": ("#F0FDF4","#15803D")}
+    bg, fg  = colors[kind]
+    # Large avatar (90px) for the hero banner — no extra wrapper div needed
+    avatar  = player_avatar(name, fg, size=90)
+
+    # ── Hero card ──
+    tags_html = "".join(
+        f'<span style="font-size:11px;padding:4px 12px;border-radius:20px;'
+        f'background:{bg};color:{fg};font-weight:600;border:1px solid {fg}33;'
+        f'white-space:nowrap;">{t}</span>'
+        for t in profile["tags"]
+    )
+    st.markdown(
+        f'<div style="background:linear-gradient(135deg,{DARK} 0%,{BLUE} 60%,{TEAL} 100%);'
+        f'border-radius:20px;padding:1.8rem 2rem;display:flex;align-items:center;'
+        f'gap:1.5rem;margin-bottom:1.4rem;flex-wrap:wrap;'
+        f'box-shadow:0 8px 32px rgba(0,82,204,0.25);">'
+        f'{avatar}'
+        f'<div style="flex:1;min-width:200px;">'
+        f'<div style="font-size:11px;color:rgba(255,255,255,0.5);text-transform:uppercase;'
+        f'letter-spacing:1.5px;font-weight:600;margin-bottom:4px;">{profile["emoji"]} Player Profile</div>'
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:clamp(28px,7vw,44px);'
+        f'color:white;line-height:1;letter-spacing:1.5px;">{name}</div>'
+        f'<div style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:6px;font-style:italic;">'
+        f'"{profile["nickname"]}"</div>'
+        f'<div style="font-size:13px;color:rgba(255,255,255,0.75);margin-top:8px;">'
+        f'{profile["tagline"]}</div>'
+        f'</div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Tags row ──
+    st.markdown(
+        f'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.4rem;">{tags_html}</div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Stats strip ──
+    stats_html = "".join(
+        f'<div style="flex:1;min-width:90px;text-align:center;padding:1rem;'
+        f'background:rgba(255,255,255,0.9);border-radius:14px;'
+        f'border:1px solid rgba(255,255,255,0.95);'
+        f'box-shadow:0 2px 12px rgba(0,82,204,0.07);">'
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:26px;'
+        f'background:linear-gradient(135deg,{BLUE},{TEAL});'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+        f'background-clip:text;line-height:1;">{v}</div>'
+        f'<div style="font-size:9px;color:#374151;text-transform:uppercase;'
+        f'letter-spacing:0.8px;font-weight:600;margin-top:3px;">{k}</div>'
+        f'</div>'
+        for k, v in profile["stats"]
+    )
+    st.markdown(
+        f'<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1.4rem;">'
+        f'{stats_html}</div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Highlights ──
+    st.markdown(
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;'
+        f'background:linear-gradient(135deg,{DARK},{BLUE});'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+        f'background-clip:text;margin-bottom:.8rem;letter-spacing:1px;">Highlights</div>',
+        unsafe_allow_html=True,
+    )
+    for icon, title, body in profile["highlights"]:
+        st.markdown(
+            f'<div style="background:rgba(255,255,255,0.9);border-radius:14px;'
+            f'padding:1rem 1.2rem;margin-bottom:10px;'
+            f'border:1px solid rgba(255,255,255,0.95);border-left:4px solid {GOLD};'
+            f'box-shadow:0 2px 12px rgba(0,82,204,0.07);">'
+            f'<div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:4px;">'
+            f'{icon} {title}</div>'
+            f'<div style="font-size:13px;color:#475569;line-height:1.55;">{body}</div>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+    # ── Back button at bottom ──
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("← Back to Dashboard", key="back_bottom"):
+        st.query_params.clear()
+        st.rerun()
+
+
+# ── Route: player profile OR main dashboard ───────────────────────────────────
+_params      = st.query_params
+_player_slug = _params.get("player", "")
 
 #  CSS 
 st.markdown(f"""
@@ -446,14 +742,44 @@ html, body, [class*="css"] {{ font-family: 'Inter', 'DM Sans', sans-serif; }}
 }}
 [data-baseweb="tab-highlight"], [data-baseweb="tab-border"] {{ display: none !important; }}
 .block-container {{ padding-top: 1rem !important; }}
+
+/* ── Mobile overrides ── */
+@media (max-width: 640px) {{
+    .block-container {{
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }}
+    /* Tab list: allow wrapping on small screens */
+    [data-baseweb="tab-list"] {{
+        flex-wrap: wrap !important;
+        border-radius: 16px !important;
+        justify-content: center !important;
+    }}
+    [data-baseweb="tab"] {{
+        font-size: 11px !important;
+        padding: 6px 10px !important;
+    }}
+    /* Metric cards: stack 2-per-row */
+    [data-testid="metric-container"] {{
+        padding: 0.75rem 0.9rem !important;
+    }}
+    [data-testid="stMetricValue"] {{
+        font-size: 1.6rem !important;
+    }}
+}}
 </style>
 """, unsafe_allow_html=True)
+
+if _player_slug:
+    show_player_page(_player_slug)
+    st.stop()
 
 #  Header 
 st.markdown(f"""
 <div style="background:linear-gradient(135deg, {DARK} 0%, {BLUE} 55%, {TEAL} 100%);
-            border-radius:20px;padding:1.6rem 2rem;
-            display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;
+            border-radius:20px;padding:1.4rem 1.5rem;
+            display:flex;align-items:center;gap:1.2rem;margin-bottom:1.5rem;
+            flex-wrap:wrap;
             position:relative;overflow:hidden;
             box-shadow:0 8px 32px rgba(0,82,204,0.25),0 2px 8px rgba(0,0,0,0.15);">
   <!-- Decorative circles -->
@@ -471,7 +797,7 @@ st.markdown(f"""
   </div>
   <!-- Title -->
   <div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:38px;color:white;
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,6vw,38px);color:white;
                 letter-spacing:2px;line-height:1;text-shadow:0 2px 8px rgba(0,0,0,0.2);">Mumbai Indians</div>
     <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:5px;
                 letter-spacing:0.5px;font-weight:500;">
@@ -479,8 +805,8 @@ st.markdown(f"""
     </div>
   </div>
   <!-- Trophy count -->
-  <div style="margin-left:auto;text-align:right;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:62px;
+  <div style="margin-left:auto;text-align:right;flex-shrink:0;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,10vw,62px);
                 color:{GOLD};line-height:1;
                 text-shadow:0 0 30px rgba(240,180,41,0.4);">5</div>
     <div style="font-size:10px;color:rgba(255,255,255,0.5);
@@ -530,7 +856,7 @@ with tab1:
         rows = "".join(
             f'<div style="display:flex;justify-content:space-between;align-items:center;'
             f'padding:10px 0;border-bottom:1px solid rgba(0,82,204,0.06);">'
-            f'<span style="font-size:12px;color:#94a3b8;font-weight:500;">{lbl}</span>'
+            f'<span style="font-size:12px;color:#1e293b;font-weight:600;">{lbl}</span>'
             f'<span style="font-size:13px;font-weight:700;color:{BLUE};">{val}</span>'
             f'</div>'
             for lbl, val in facts
@@ -540,7 +866,7 @@ with tab1:
             f'-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:1.4rem;'
             f'border:1px solid rgba(255,255,255,0.95);height:100%;'
             f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.05);">'
-            f'<div style="font-size:10px;font-weight:700;color:#94a3b8;'
+            f'<div style="font-size:10px;font-weight:700;color:#374151;'
             f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1rem;'
             f'display:flex;align-items:center;gap:6px;">'
             f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
@@ -615,7 +941,7 @@ with tab4:
             f'<span style="display:flex;align-items:center;gap:7px;">'
             f'{logo_tag(r["Team"], 22)}'
             f'<span style="color:#0f172a;font-weight:600;">{r["Team"]}</span></span>'
-            f'<span style="color:#94a3b8;font-size:11px;">{r["Wins"]}W &nbsp;{r["Losses"]}L'
+            f'<span style="color:#374151;font-size:11px;">{r["Wins"]}W &nbsp;{r["Losses"]}L'
             f'&nbsp;<b style="color:{BLUE};font-size:12px;">{r["WinPct"]}%</b></span>'
             f'</div>'
             f'<div style="display:flex;height:7px;border-radius:6px;overflow:hidden;'
@@ -630,7 +956,7 @@ with tab4:
             f'-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:1.4rem;'
             f'border:1px solid rgba(255,255,255,0.95);'
             f'box-shadow:0 4px 24px rgba(0,82,204,0.08),0 1px 3px rgba(0,0,0,0.05);">'
-            f'<div style="font-size:10px;font-weight:700;color:#94a3b8;'
+            f'<div style="font-size:10px;font-weight:700;color:#374151;'
             f'text-transform:uppercase;letter-spacing:0.8px;margin-bottom:1.1rem;'
             f'display:flex;align-items:center;gap:6px;">'
             f'<span style="width:3px;height:12px;background:linear-gradient(180deg,{BLUE},{GOLD});'
@@ -643,16 +969,20 @@ with tab4:
 
 #TAB5—KEY PLAYERS
 with tab5:
-    kp_col, radar_col = st.columns(2)
-    with kp_col:
-        st.markdown(
-            f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
-            f'background:linear-gradient(135deg,{DARK},{BLUE});'
-            f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
-            f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact Players</div>',
-            unsafe_allow_html=True,
-        )
-        for num, name, desc, kind in KEY_PLAYERS:
+    st.markdown(
+        f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
+        f'background:linear-gradient(135deg,{DARK},{BLUE});'
+        f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
+        f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact XI</div>',
+        unsafe_allow_html=True,
+    )
+
+    # 2-column grid for player cards
+    left_col, right_col = st.columns(2)
+    for i, (num, name, desc, kind) in enumerate(KEY_PLAYERS):
+        col = left_col if i % 2 == 0 else right_col
+        with col:
             st.markdown(kp_row_html(num, name, desc, kind), unsafe_allow_html=True)
-    with radar_col:
-        chart_card("Impact score — key players (composite)", radar_chart(), "radar")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    chart_card("How MI won each IPL Final 🏆", finals_chart(), "finals")
