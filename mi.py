@@ -18,7 +18,7 @@ TITLE_YEARS = {"2013", "2015", "2017", "2019", "2020"}
 
 #LOGOs
 TEAM_LOGOS = {
-    "MI":   "images/mi.png",
+    "MI":   "images/MI.png",
     "CSK":  "images/csk.png",
     "KKR":  "images/kkr.png",
     "RCB":  "images/rcb.png",
@@ -973,7 +973,7 @@ with tab5:
         f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
         f'background:linear-gradient(135deg,{DARK},{BLUE});'
         f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
-        f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact XI</div>',
+        f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact Players</div>',
         unsafe_allow_html=True,
     )
 
