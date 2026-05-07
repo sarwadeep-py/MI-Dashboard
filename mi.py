@@ -18,26 +18,26 @@ TITLE_YEARS = {"2013", "2015", "2017", "2019", "2020"}
 
 #LOGOs
 TEAM_LOGOS = {
-    "MI":   "C:/Users/dell/Downloads/Mumbai_Indians_Logo.svg.png",
-    "CSK":  "C:/Users/dell/Downloads/Chennai-Super-Kings-Logo.png",
-    "KKR":  r"C:\Users\dell\Downloads\kkr.png",
-    "RCB":  r"C:\Users\dell\Downloads\rcb.png",
-    "DC":  r"C:\Users\dell\Downloads\dc.png",
-    "RR":   r"C:\Users\dell\Downloads\rr.png",
-    "SRH":  r"C:\Users\dell\Downloads\srh.png",
-    "PBKS": r"C:\Users\dell\Downloads\pbks.png",
-    "GT":  r"C:\Users\dell\Downloads\gt.png"
+    "MI":   "images/MI.png",
+    "CSK":  "images/csk.png",
+    "KKR":  "images/kkr.png",
+    "RCB":  "images/rcb.png",
+    "DC":   "images/dc.png",
+    "RR":   "images/rr.png",
+    "SRH":  "images/srh.png",
+    "PBKS": "images/pbks.png",
+    "GT":   "images/gt.png",
 }
 
 PLAYER_PHOTOS = {
-    "Rohit Sharma":     "C:/Users/dell/Downloads/rs.png",
-    "Sachin Tendulkar": r"C:\Users\dell\Downloads\st.png",
-    "Suryakumar Yadav": r"C:\Users\dell\Downloads\download (1).png",
-    "Kieron Pollard":   r"C:\Users\dell\Downloads\kp.png",
-    "Lasith Malinga":   r"C:\Users\dell\Downloads\lm.png",
-    "Jasprit Bumrah":   r"C:\Users\dell\Downloads\jb.png",
-    "Harbhajan Singh":  r"C:\Users\dell\Downloads\hb.png",
-    "Hardik Pandya":   r"C:\Users\dell\Downloads\hp.png",
+    "Rohit Sharma":     "images/rs.png",
+    "Sachin Tendulkar": "images/st.png",
+    "Suryakumar Yadav": "images/sky.png",
+    "Kieron Pollard":   "images/kp.png",
+    "Lasith Malinga":   "images/lm.png",
+    "Jasprit Bumrah":   "images/jb.png",
+    "Harbhajan Singh":  "images/hb.png",
+    "Hardik Pandya":    "images/hp.png",
 }
 
 # img
@@ -649,7 +649,7 @@ with tab5:
             f'<div style="font-family:\'Bebas Neue\',sans-serif;font-size:24px;'
             f'background:linear-gradient(135deg,{DARK},{BLUE});'
             f'-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
-            f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact XI</div>',
+            f'background-clip:text;margin-bottom:.9rem;letter-spacing:1px;">All-time Impact Players</div>',
             unsafe_allow_html=True,
         )
         for num, name, desc, kind in KEY_PLAYERS:
