@@ -68,7 +68,7 @@ def player_avatar(name: str, badge_color: str = BLUE, size: int = 56) -> str:
         f'<div style="width:{size}px;height:{size}px;border-radius:50%;flex-shrink:0;'
         f'background:linear-gradient(135deg,{badge_color},{TEAL});'
         f'display:flex;align-items:center;justify-content:center;'
-        f'font-family:\'Bebas Neue\',sans-serif;font-size:{font_size}px;color:white;'
+        f'font-family:\'Bebas Neue\',sans-serif;font-size:{font_size}px;color:black;'
         f'border:{border_px+0.5}px solid {GOLD};box-shadow:0 3px 10px rgba(0,0,0,0.18);">'
         f'{initials}</div>'
     )
