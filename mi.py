@@ -298,7 +298,7 @@ def season_chart():
     fig = go.Figure(go.Bar(
         x=years, y=wins,
         marker_color=colors,
-        marker_line_color=["#B8960C" if y in TITLE_YEARS else "#003580" for y in years],
+        marker_line_color=["#B8960C" if y in TITLE_YEARS else "#050505" for y in years],
         marker_line_width=1,
         text=wins, textposition="outside",
         textfont=dict(size=11, color="#050505"),
@@ -329,7 +329,7 @@ def scorers_chart():
         y=TOP_SCORERS["Player"], x=TOP_SCORERS["Runs"], orientation="h",
         marker_color=[BLUE,"#378ADD",BLUE,"#378ADD",BLUE,"#378ADD"],
         text=TOP_SCORERS["Runs"], textposition="outside",
-        textfont=dict(size=11, color="#6b7280"),
+        textfont=dict(size=11, color="#050505"),
     ))
     fig.update_layout(
         **BASE, height=280, showlegend=False,
@@ -343,7 +343,7 @@ def venue_chart():
         y=VENUES["Label"], x=VENUES["WinPct"], orientation="h",
         marker_color=[GOLD if h else BLUE for h in VENUES["Home"]],
         text=[f"{w}%" for w in VENUES["WinPct"]], textposition="outside",
-        textfont=dict(size=11, color="#6b7280"),
+        textfont=dict(size=11, color="#050505"),
     ))
     fig.update_layout(
         **BASE, height=300, showlegend=False,
@@ -433,7 +433,7 @@ def finals_chart():
             y=max(0.5, f["margin"] / 2),
             text=f"vs {f['opponent']}",
             showarrow=False,
-            font=dict(size=11, color="white", family="Inter, sans-serif"),
+            font=dict(size=11, color="black", family="Inter, sans-serif"),
             bgcolor="rgba(0,0,0,0)",
         )
         fig.add_annotation(
