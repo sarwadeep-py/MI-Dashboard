@@ -301,7 +301,7 @@ def season_chart():
         marker_line_color=["#B8960C" if y in TITLE_YEARS else "#003580" for y in years],
         marker_line_width=1,
         text=wins, textposition="outside",
-        textfont=dict(size=11, color="#6b7280"),
+        textfont=dict(size=11, color="#050505"),
     ))
     fig.update_layout(
         **BASE, bargap=0.35, height=320, showlegend=False,
