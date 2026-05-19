@@ -112,63 +112,62 @@ BASE = dict(
 
 # input
 SEASONS = [
-    ("2008",7),("2009",6),("2010",8),("2011",6),("2012",10),
-    ("2013",12),("2014",7),("2015",12),("2016",8),("2017",10),
-    ("2018",6),("2019",9),("2020",9),("2021",12),("2022",5),
-    ("2023",8),("2024",7),
+    ("2008",7),("2009",5),("2010",11),("2011",10),("2012",10),
+    ("2013",13),("2014",7),("2015",10),("2016",7),("2017",12),
+    ("2018",6),("2019",11),("2020",11),("2021",7),("2022",4),
+    ("2023",9),("2024",4),("2025",9),
 ]
 
 BATTERS = pd.DataFrame([
-    {"Name":"Rohit Sharma",    "Role":"Batsman · Captain", "Runs":5611,"Avg":45.3,"Stat3":4,   "S3L":"100s"},
+    {"Name":"Rohit Sharma",    "Role":"Batsman · Captain", "Runs":7314,"Avg":30.10,"Stat3":2,   "S3L":"100s"},
     {"Name":"Sachin Tendulkar","Role":"Batsman",            "Runs":2334,"Avg":34.8,"Stat3":1,   "S3L":"100s"},
-    {"Name":"Suryakumar Yadav","Role":"Batsman",            "Runs":2644,"Avg":31.9,"Stat3":148, "S3L":"SR"},
-    {"Name":"Kieron Pollard",  "Role":"All-rounder",        "Runs":3412,"Avg":27.5,"Stat3":191, "S3L":"SR"},
+    {"Name":"Suryakumar Yadav","Role":"Batsman",            "Runs":4506,"Avg":33.6,"Stat3":148, "S3L":"SR"},
+    {"Name":"Kieron Pollard",  "Role":"All-rounder",        "Runs":3412,"Avg":28.6,"Stat3":147.32, "S3L":"SR"},
 ])
 
 BOWLERS = pd.DataFrame([
-    {"Name":"Lasith Malinga", "Role":"Right-arm Fast","Wkts":170,"Eco":7.14,"Avg":"17.0"},
-    {"Name":"Jasprit Bumrah", "Role":"Right-arm Fast","Wkts":145,"Eco":7.39,"Avg":"21.7"},
-    {"Name":"Harbhajan Singh","Role":"Off-spin",      "Wkts":127,"Eco":6.97,"Avg":"24.6"},
-    {"Name":"Hardik Pandya",  "Role":"All-rounder",   "Wkts":42, "Eco":8.89,"Avg":"—"},
+    {"Name":"Lasith Malinga", "Role":"Right-arm Fast","Wkts":170,"Eco":7.14,"Avg":"19.80"},
+    {"Name":"Jasprit Bumrah", "Role":"Right-arm Fast","Wkts":184,"Eco":7.28,"Avg":"22.88"},
+    {"Name":"Harbhajan Singh","Role":"Off-spin",      "Wkts":150,"Eco":7.08,"Avg":"26.87"},
+    {"Name":"Hardik Pandya",  "Role":"All-rounder",   "Wkts":82, "Eco":9.38,"Avg":"33.39"},
 ])
 
 TOP_SCORERS = pd.DataFrame({
-    "Player":["Rohit Sharma","K Pollard","SKY","R Agarwal","Tendulkar","JP Duminy"],
-    "Runs":  [5611, 3412, 2644, 2400, 2334, 2000],
+    "Player":["Rohit Sharma","K Pollard","SKY","Tendulkar"],
+    "Runs":  [7314, 3412, 4506, 2334],
 })
 
 VENUES = pd.DataFrame([
-    {"Venue":"Wankhede Stadium",    "Wins":52,"Total":70,"Home":True},
-    {"Venue":"DY Patil Stadium",    "Wins":14,"Total":18,"Home":True},
-    {"Venue":"Eden Gardens",        "Wins":12,"Total":19,"Home":False},
-    {"Venue":"Chinnaswamy Stadium", "Wins":11,"Total":17,"Home":False},
-    {"Venue":"Chepauk Stadium",     "Wins":9, "Total":17,"Home":False},
-    {"Venue":"Arun Jaitley Stadium","Wins":10,"Total":16,"Home":False},
-    {"Venue":"Sawai Mansingh",      "Wins":8, "Total":14,"Home":False},
+    {"Venue":"Wankhede Stadium",    "Wins":58,"Total":97,"Home":True},
+    {"Venue":"Eden Gardens",        "Wins":7,"Total":11,"Home":False},
+    {"Venue":"Chinnaswamy Stadium", "Wins":8,"Total":11,"Home":False},
+    {"Venue":"Chepauk Stadium",     "Wins":7, "Total":16,"Home":False},
+    {"Venue":"Arun Jaitley Stadium","Wins":6,"Total":15,"Home":False},
+    {"Venue":"Sawai Mansingh",      "Wins":3, "Total":9,"Home":False},
 ])
 VENUES["WinPct"] = (VENUES["Wins"] / VENUES["Total"] * 100).round(0).astype(int)
 VENUES["Label"]  = VENUES.apply(lambda r: f"{r['Venue']} (H)" if r["Home"] else r["Venue"], axis=1)
 
 RIVALS = pd.DataFrame([
-    {"Team":"CSK", "Wins":18,"Losses":15},
-    {"Team":"KKR", "Wins":20,"Losses":12},
-    {"Team":"RCB", "Wins":19,"Losses":11},
-    {"Team":"DC",  "Wins":18,"Losses":13},
-    {"Team":"RR",  "Wins":17,"Losses":11},
-    {"Team":"SRH", "Wins":16,"Losses":10},
+    {"Team":"CSK", "Wins":21,"Losses":20},
+    {"Team":"KKR", "Wins":25,"Losses":11},
+    {"Team":"RCB", "Wins":19,"Losses":15},
+    {"Team":"DC",  "Wins":21,"Losses":17},
+    {"Team":"RR",  "Wins":16,"Losses":15},
+    {"Team":"SRH", "Wins":14,"Losses":11},
     {"Team":"PBKS","Wins":18,"Losses":10},
-    {"Team":"GT",  "Wins":5, "Losses":6},
+    {"Team":"GT",  "Wins":4, "Losses":5},
 ])
 RIVALS["WinPct"] = (RIVALS["Wins"] / (RIVALS["Wins"] + RIVALS["Losses"]) * 100).round(0).astype(int)
 
 KEY_PLAYERS = [
-    (1,"Rohit Sharma",    "5611 runs · 4 centuries · Captain for all 5 titles","bat"),
+    (1,"Rohit Sharma",    "7314 runs · 2 centuries · Captain for all 5 titles","bat"),
     (2,"Lasith Malinga",  "170 wickets · All-time IPL leading wicket-taker",   "bowl"),
     (3,"Kieron Pollard",  "3412 runs + wickets · 13 seasons at MI",            "all"),
-    (4,"Jasprit Bumrah",  "145 wickets · Best death bowler in IPL history",    "bowl"),
-    (5,"Suryakumar Yadav","2644 runs · SR 148 · T20 World No.1 batsman",      "bat"),
+    (4,"Jasprit Bumrah",  "184 wickets · Best death bowler in IPL history",    "bowl"),
+    (5,"Suryakumar Yadav","4506 runs · SR 148 · T20 World No.1 batsman",      "bat"),
     (6,"Sachin Tendulkar","2334 runs · MI's iconic figure",                    "bat"),
-    (7,"Hardik Pandya",   "1476 runs + 42 wickets · Title-winning allrounder", "all"),
+    (7,"Hardik Pandya",   "2895 runs + 82 wickets · Title-winning allrounder", "all"),
 ]
 
 # Player profile data — used by the individual player pages
